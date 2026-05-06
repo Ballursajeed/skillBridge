@@ -42,7 +42,7 @@ export default function ProgrammeManagerDashboard({ user }) {
     <h4>Institutions</h4>
 
     {summary.map(inst => (
-      <div key={inst.institution_id} style={{ padding: 8 }} onClick={() => navigate(`/institution/${inst.institution_id}`)}>
+      <div key={inst.institution_id} style={{ padding: 8, cursor: "pointer", }} onClick={() => navigate(`/institution/${inst.institution_id}`)}>
         {inst.institution_name}
       </div>
     ))}
