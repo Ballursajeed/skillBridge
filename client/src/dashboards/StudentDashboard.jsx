@@ -92,7 +92,7 @@ const [searchParams] = useSearchParams()
 
   return (
     <div style={{ maxWidth: 800, margin: '40px auto', padding: 24 }}>
-      <h2>Welcome, {user.username}</h2>
+      <h2>Welcome, {user?.name}</h2>
       <button onClick={() => signOut()}>Logout</button>
       <h3>Your Sessions</h3>
       {sessions.length === 0 && <p>No sessions found.</p>}
