@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useAuth } from "@clerk/clerk-react"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
+import api from '../api/axios'
 
 export default function CreateBatch() {
   const { getToken } = useAuth()
@@ -18,8 +18,8 @@ export default function CreateBatch() {
 
       const token = await getToken()
 
-      await axios.post(
-        "http://localhost:5000/batches",
+      await api.post(
+        "/batches",
         { name },
         { headers: { Authorization: `Bearer ${token}` } }
       )

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth, useClerk } from '@clerk/clerk-react'
-import axios from 'axios'
+import api from '../api/axios'
 
 export default function TrainerDashboard({ user }) {
   const { getToken } = useAuth()
@@ -23,8 +23,8 @@ export default function TrainerDashboard({ user }) {
       const token = await getToken()
       const headers = { Authorization: `Bearer ${token}` }
       const [sessionsRes, batchesRes] = await Promise.all([
-        axios.get('http://localhost:5000/sessions/my', { headers }),
-        axios.get('http://localhost:5000/batches/my', { headers }),
+        api.get('/sessions/my', { headers }),
+        api.get('/batches/my', { headers }),
       ])
       setSessions(sessionsRes.data)
       setBatches(batchesRes.data)
@@ -39,7 +39,7 @@ export default function TrainerDashboard({ user }) {
   const createSession = async () => {
     try {
       const token = await getToken()
-      await axios.post('http://localhost:5000/sessions', form, {
+      await api.post('/sessions', form, {
         headers: { Authorization: `Bearer ${token}` }
       })
       alert('Session created!')
@@ -53,7 +53,7 @@ export default function TrainerDashboard({ user }) {
   const viewAttendance = async (session) => {
     try {
       const token = await getToken()
-      const res = await axios.get(`http://localhost:5000/sessions/${session?.id}/attendance`, {
+      const res = await api.get(`/sessions/${session?.id}/attendance`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       setAttendance(res.data?.result)
@@ -67,8 +67,8 @@ export default function TrainerDashboard({ user }) {
   try {
     const token = await getToken()
 
-    const res = await axios.post(
-      `http://localhost:5000/batches/${batchId}/invite`,
+    const res = await api.post(
+      `/batches/${batchId}/invite`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     )

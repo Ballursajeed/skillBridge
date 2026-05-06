@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react'
 import { useAuth, useClerk } from '@clerk/clerk-react'
-import axios from 'axios'
+import api from '../api/axios'
+import { useSearchParams, useParams } from "react-router-dom"  
+
 
 export default function StudentDashboard({ user }) {
   const { getToken } = useAuth()
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
   const [markedSessions, setMarkedSessions] = useState({})
+
+  const { id: batchId } = useParams()
+const [searchParams] = useSearchParams()
+  
    const { signOut } = useClerk()
   
 
@@ -14,7 +20,7 @@ export default function StudentDashboard({ user }) {
     const fetchSessions = async () => {
       try {
         const token = await getToken()
-        const res = await axios.get('http://localhost:5000/sessions/my', {
+        const res = await api.get('/sessions/my', {
           headers: { Authorization: `Bearer ${token}` }
         })
         setSessions(res.data)
@@ -27,12 +33,40 @@ export default function StudentDashboard({ user }) {
     fetchSessions()
   }, [])
 
+  useEffect(() => {
+  const handleAutoJoin = async () => {
+    try {
+      const token = searchParams.get("token")
+
+      if (!batchId || !token) return
+
+      const authToken = await getToken()
+
+      await api.post(
+        `/batches/${batchId}/join`,
+        { token },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      )
+
+      console.log("Joined successfully")
+
+      // clean URL so it doesn't repeat
+      window.history.replaceState({}, "", "/")
+
+    } catch (err) {
+      console.log("Join failed or already joined")
+    }
+  }
+
+  handleAutoJoin()
+}, [])
+
  const markAttendance = async (session_id, status) => {
   try {
     const token = await getToken()
 
-    const res = await axios.post(
-      'http://localhost:5000/attendance/mark',
+    const res = await api.post(
+      '/attendance/mark',
       { session_id, status },
       { headers: { Authorization: `Bearer ${token}` } }
     )
@@ -58,7 +92,7 @@ export default function StudentDashboard({ user }) {
 
   return (
     <div style={{ maxWidth: 800, margin: '40px auto', padding: 24 }}>
-      <h2>Welcome, {user.name}</h2>
+      <h2>Welcome, {user.username}</h2>
       <button onClick={() => signOut()}>Logout</button>
       <h3>Your Sessions</h3>
       {sessions.length === 0 && <p>No sessions found.</p>}

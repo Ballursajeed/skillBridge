@@ -2,7 +2,7 @@ import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react'
 import { Routes, Route, Navigate } from 'react-router'
 import { useEffect, useState } from 'react'
 import { useAuth,useUser } from '@clerk/clerk-react'
-import axios from 'axios'
+import api from './api/axios'
 
 import StudentDashboard from './dashboards/StudentDashboard'
 import TrainerDashboard from './dashboards/TrainerDashboard'
@@ -24,8 +24,11 @@ import InstitutionDetails from './components/InstitutionDetails'
   const saveRole = async () => {
     const token = await getToken()
 
-    await axios.post(
-      "http://localhost:5000/auth/register",
+    console.log("here"); //yes can see
+    
+
+   const res =  await api.post(
+      "/auth/register",
       {
         role,
         name: user.username   // 👈 from Clerk
@@ -33,7 +36,9 @@ import InstitutionDetails from './components/InstitutionDetails'
       {
         headers: { Authorization: `Bearer ${token}` }
       }
-    )
+    );
+
+    console.log("Response: ",res); // no logs in browser
 
     window.location.href = "/"
   }
@@ -73,7 +78,7 @@ function DashboardRouter() {
   try {
     const token = await getToken()
 
-    const res = await axios.get('http://localhost:5000/auth/me', {
+    const res = await api.get(`/auth/me`, {
       headers: { Authorization: `Bearer ${token}` }
     })
 
@@ -105,6 +110,7 @@ export default function App() {
          <Route path="/setup-role" element={<RoleSetup />} />
          <Route path="/*" element={<DashboardRouter />} />
          <Route path="/batches/:id" element={<BatchDetails />} />
+         <Route path="/batches/:id/join" element={<StudentDashboard />} />
          <Route path="/institution/:id" element={<InstitutionDetails />} />
          <Route path="/create-batch" element={<CreateBatch />} />
         </Routes>

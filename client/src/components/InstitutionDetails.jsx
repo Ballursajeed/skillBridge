@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import axios from "axios"
+import api from "../api/axios"
 import { useAuth } from "@clerk/clerk-react"
 
 const InstitutionDetails = () => {
@@ -15,7 +15,7 @@ const InstitutionDetails = () => {
     const fetchSummary = async () => {
       try {
         const token = await getToken()
-        const res = await axios.get('http://localhost:5000/programme/summary', {
+        const res = await api.get('/programme/summary', {
           headers: { Authorization: `Bearer ${token}` }
         })
         setSummary(res.data)

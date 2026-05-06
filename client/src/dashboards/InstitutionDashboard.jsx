@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useAuth, useClerk } from "@clerk/clerk-react"
-import axios from "axios"
+import api from "../api/axios"
 
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
@@ -34,8 +34,8 @@ export default function InstitutionDashboard({ user }) {
       const token = await getToken()
       const headers = { Authorization: `Bearer ${token}` }
 
-      const summaryRes = await axios.get(
-        `http://localhost:5000/institutions/${user.institution_id}/summary`,
+      const summaryRes = await api.get(
+        `/institutions/${user.institution_id}/summary`,
         { headers }
       )
 
@@ -48,8 +48,8 @@ export default function InstitutionDashboard({ user }) {
         }))
       )
 
-      const trainersRes = await axios.get(
-        `http://localhost:5000/institutions/${user.institution_id}/trainers`,
+      const trainersRes = await api.get(
+        `/institutions/${user.institution_id}/trainers`,
         { headers }
       )
 
@@ -65,8 +65,8 @@ export default function InstitutionDashboard({ user }) {
   const assignTrainer = async () => {
     const token = await getToken()
 
-    await axios.post(
-      `http://localhost:5000/batches/${assignForm.batch_id}/assign-trainer`,
+    await api.post(
+      `/batches/${assignForm.batch_id}/assign-trainer`,
       { trainer_id: assignForm.trainer_id },
       { headers: { Authorization: `Bearer ${token}` } }
     )

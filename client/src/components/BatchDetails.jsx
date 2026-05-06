@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import axios from "axios"
+import api from "../api/axios"
 import { useAuth } from "@clerk/clerk-react"
 
 export default function BatchDetails() {
@@ -20,8 +20,8 @@ export default function BatchDetails() {
   const fetchTrainers = async () => {
     const token = await getToken()
 
-    const res = await axios.get(
-      `http://localhost:5000/batches/${id}/trainers`,
+    const res = await api.get(
+      `/batches/${id}/trainers`,
       { headers: { Authorization: `Bearer ${token}` } }
     )
 
@@ -31,8 +31,8 @@ export default function BatchDetails() {
   const fetchStudents = async () => {
     const token = await getToken()
 
-    const res = await axios.get(
-      `http://localhost:5000/batches/${id}/students`,
+    const res = await api.get(
+      `/batches/${id}/students`,
       { headers: { Authorization: `Bearer ${token}` } }
     )
 
@@ -42,8 +42,8 @@ export default function BatchDetails() {
    const fetchBatch = async () => {
     const token = await getToken()
 
-    const res = await axios.get(
-      `http://localhost:5000/batches/${id}/summary`,
+    const res = await api.get(
+      `/batches/${id}/summary`,
       { headers: { Authorization: `Bearer ${token}` } }
     )
 

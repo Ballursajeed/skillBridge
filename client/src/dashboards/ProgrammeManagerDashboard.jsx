@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth, useClerk } from '@clerk/clerk-react'
-import axios from 'axios'
+import api from '../api/axios'
 import { useNavigate } from "react-router-dom"
 
 export default function ProgrammeManagerDashboard({ user }) {
@@ -15,7 +15,7 @@ export default function ProgrammeManagerDashboard({ user }) {
     const fetchSummary = async () => {
       try {
         const token = await getToken()
-        const res = await axios.get('http://localhost:5000/programme/summary', {
+        const res = await api.get('/programme/summary', {
           headers: { Authorization: `Bearer ${token}` }
         })
         setSummary(res.data)
