@@ -84,7 +84,7 @@ server/
 
 1. Clone repo
 
-git clone https://github.com/yourusername/skillbridge.git
+git clone https://github.com/Ballursajeed/skillbridge.git
 cd skillbridge
 
 2. Backend setup
@@ -137,6 +137,15 @@ Database: Neon
 - Pagination & filtering for large datasets
 - Institution-based trainer onboarding/invite workflow
 
+## 🧪 Test Accounts
+
+| Role | Email | Password |
+|------|------|------|
+| Student | alex_student | XtxRtgFfz8EZ7v3 |
+| Trainer | Jhon_trainer | f7VrEuF3t7fRJsh |
+| Institution | SkillBridge_A | yxF8m6FNqWK6Xj8 |
+| Programme Manager | pm_1 | E"T_}"#tg"2:B#s |
+| Monitoring Officer | mo_1 | z:@B]7pZCb8AaS} |
 
 ## 🔗 Live Demo
 
