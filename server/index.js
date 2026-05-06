@@ -13,7 +13,16 @@ import programmeRoutes from "./routes/programme.route.js";
 
 dns.setDefaultResultOrder("ipv4first");
 const app = express();
-app.use(cors());
+const PORT = process.env.PORT || 5000;
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://your-frontend.vercel.app"
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 sql`SELECT 1`
@@ -56,4 +65,8 @@ app.use("/attendance", attendanceRoutes);
 app.use("/institutions", institutionRoutes);
 app.use("/programme", programmeRoutes);
 
-app.listen(5000, () => console.log("Server running on 5000"));
+app.get("/", (req, res) => {
+  res.send("API running");
+});
+
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
